@@ -46,14 +46,11 @@ function Install-Driver
                 pnputil /add-driver $_.FullName /install
             }
             
-            if($LASTEXITCODE -eq 0) {
-                Write-Verbose "Installation of driver $($_.FullName) is completed successfully."
-            } elseif($LASTEXITCODE -eq 3010) {
-                Write-Verbose "Installation of driver $($_.FullName) is completed successfully. REBOOT REQUIRED"
-            } elseif($LASTEXITCODE -eq 1641){
-                Write-Verbose "Installation of driver $($_.FullName) is completed successfully. REBOOT INITIATED"
-            } else {
-                Write-Error "An error occured on installing driver $($_.FullName). Error code: $LASTEXITCODE"
+            switch ($LASTEXITCODE) {
+                0 {Write-Verbose "Installation of driver $($_.FullName) is completed successfully."; break;}
+                3010 { Write-Verbose "Installation of driver $($_.FullName) is completed successfully. REBOOT REQUIRED"; break; }
+                1641 { Write-Verbose "Installation of driver $($_.FullName) is completed successfully. REBOOT INITIATED"; break; }
+                default { Write-Error "An error occured on installing driver $($_.FullName). Error code: $LASTEXITCODE"; break; }
             }
         }
     }
