@@ -36,7 +36,7 @@ function Install-Driver
     Process
     {
         $drivers = Get-ChildItem $DriverPath -Recurse -Filter "*.inf" 
-        if($drivers -eq $null -or $drivers.Count -eq 0) { Write-Error "No drivers found." -ErrorAction Stop -Category ObjectNotFound}
+        if($null -eq $drivers -or $drivers.Count -eq 0) { Write-Error "No drivers found." -ErrorAction Stop -Category ObjectNotFound}
 
         $drivers | ForEach-Object {
             
